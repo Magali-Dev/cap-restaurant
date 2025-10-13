@@ -1,3 +1,12 @@
+/* assets/styles/app.css */
 body {
-    background-color: skyblue;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.hero {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    color: white;
+    padding: 100px 0;
+    text-align: center;
 }
