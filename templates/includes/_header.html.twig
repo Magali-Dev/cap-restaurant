@@ -1,0 +1,148 @@
+<header class="navbar">
+    <div class="navbar-container">
+        <button class="burger-menu" id="burgerMenu" aria-label="Ouvrir le menu" aria-expanded="false">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+        </button>
+
+        <nav class="nav-left">
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_home') }}#galerie">La carte</a>
+            <a href="#">Services</a>
+            <a href="{{ path('app_home') }}#footer">Nous contacter</a>
+        </nav>
+
+        <div class="nav-logo">
+            <a href="{{ path('app_home') }}">
+                <img src="{{ asset('images/logo-LeCapRistobar2.png') }}" alt="Le Cap Ristobar">
+            </a>
+        </div>
+
+        <div class="nav-right">
+            <a href="#" class="btn btn-primary">Réservation de table</a>
+            <a href="#" class="btn btn-outline">Commande de pizzas</a>
+            <a href="#" class="icon-link"><i class="fas fa-sign-out-alt"></i></a>
+            <a href="#" class="icon-link"><i class="fas fa-shopping-basket"></i></a>
+        </div>
+    </div>
+
+    <!-- Menu mobile -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu" id="closeMenu" aria-label="Fermer le menu">×</button>
+        <a href="{{ path('app_home') }}">Accueil</a>
+        <a href="{{ path('app_home') }}#galerie">La carte</a>
+        <a href="#">Services</a>
+        <a href="{{ path('app_home') }}#footer">Nous contacter</a>
+        <a href="#" class="btn btn-primary" style="margin-top: 20px;">Réservation de table</a>
+        <a href="#" class="btn btn-outline" style="margin-top: 10px;">Commande de pizzas</a>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+</header>
+
+<!-- Section Héros -->
+<section class="hero-section">
+    <img src="{{ asset('images/pizza/pizza1.jpg') }}" alt="Restaurant Le Cap Ristobar" class="hero-image">
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <div class="hero-tags">
+                <span class="hero-tag">Bar</span>
+                <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="•" class="separator-diamond">
+                <span class="hero-tag">Restaurant</span>
+                <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="•" class="separator-diamond">
+                <span class="hero-tag">Pizzeria</span>
+                <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="•" class="separator-diamond">
+                <span class="hero-tag">Événements</span>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+console.log('app.js chargé ✅', new Date().toISOString());
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM prêt ✅');
+
+    const navbar = document.querySelector('header.navbar');
+    const hero = document.querySelector('section.hero-section');
+
+    if (!navbar) {
+        console.warn('⚠️ Aucun élément <header class="navbar"> trouvé.');
+        return;
+    }
+
+    // SCROLL
+    let ticking = false;
+
+    function handleScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const scrollY = window.scrollY;
+
+                if (scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                    document.body.classList.add('has-scrolled-navbar');
+                    if (hero) hero.classList.add('hidden');
+                } else {
+                    navbar.classList.remove('scrolled');
+                    document.body.classList.remove('has-scrolled-navbar');
+                    if (hero) hero.classList.remove('hidden');
+                }
+
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    //MENU BURGER 
+    const burgerMenu = document.getElementById('burgerMenu');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const closeMenu = document.getElementById('closeMenu');
+
+    if (burgerMenu && mobileMenu && menuOverlay && closeMenu) {
+        const toggleMenu = () => {
+            const isActive = burgerMenu.classList.toggle('active');
+            mobileMenu.classList.toggle('active', isActive);
+            menuOverlay.classList.toggle('active', isActive);
+            document.body.style.overflow = isActive ? 'hidden' : '';
+        };
+
+        burgerMenu.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+    } else {
+        console.warn('⚠️ Certains éléments du menu burger sont introuvables.');
+    }
+
+    //  LIENS AVEC ANCRE
+    document.querySelectorAll('a[href*="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#') && href !== '#') {
+                const targetId = href.split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    const navbarHeight = navbar.offsetHeight;
+                    const targetPosition = targetElement.offsetTop - navbarHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+});
+</script>

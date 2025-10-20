@@ -3,17 +3,262 @@
 {% block title %}Accueil - Restaurant Le Cap{% endblock %}
 
 {% block body %}
-    <div style="text-align: center; padding: 4rem 0;">
-        <h1>Bienvenue au Restaurant Le Cap</h1>
-        <p style="font-size: 1.2rem; margin: 2rem 0;">Découvrez une cuisine raffinée dans un cadre exceptionnel</p>
-        
-        <div style="display: flex; justify-content: center; gap: 2rem; margin: 3rem 0;">
-            <a href="#" style="background: #27ae60; color: white; padding: 1rem 2rem; text-decoration: none; border-radius: 5px;">
-                Voir le menu
-            </a>
-            <a href="#" style="background: #e74c3c; color: white; padding: 1rem 2rem; text-decoration: none; border-radius: 5px;">
-                Réserver une table
-            </a>
+<section class="about-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6"> 
+                <div class="diamonds-container">
+                    <img src="{{ asset('images/icons/60x60_blue.svg') }}" alt="losange" class="diamond">
+                </div>
+                <div class="about-content">
+                    <h1>À Propos</h1>
+                    <h2>Bienvenue au Restaurant Le CAP à Poitiers !</h2>
+                    <p>Découvrez un lieu chaleureux où vous pourrez savourer des plats français traditionnels et de délicieuses pizzas. Que vous soyez amateur de viande ou végétarien, notre menu varié saura satisfaire toutes vos envies.</p>
+                    <p>Profitez de nos pizzas à emporter et contactez-nous pour organiser vos événements spéciaux.</p>
+                    <p>Réservez votre table en ligne et vivez une expérience culinaire inoubliable.</p>
+                    <p class="signature">À bientôt,<br>L'équipe du CAP.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="video-container">
+                    <video controls class="about-video">
+                        <source src="{{ asset('videos/video.mp4') }}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                </div>
+            </div>
         </div>
     </div>
+</section>
+
+<section class="blue-band">
+    <div class="container">
+        <div class="diamonds-container-bande">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="losange" class="diamond">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="losange" class="diamond">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="losange" class="diamond">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="losange" class="diamond">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="losange" class="diamond">
+        </div>
+    </div>
+</section>
+
+<section class="gallery-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="gallery-title">Galerie</h2>
+            <p class="gallery-subtitle">Quelques uns de nos plats</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="gallery-card">
+                    <img src="{{ asset('images/plat/plat.jpeg') }}" class="gallery-img" alt="Notre spécialité">
+                    <div class="gallery-overlay">
+                        <h3>Spécialité Maison</h3>
+                        <p>Notre plat signature préparé avec des ingrédients frais</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="gallery-card">
+                    <img src="{{ asset('images/plat/plat1.jpeg') }}" class="gallery-img" alt="Pizza artisanale">
+                    <div class="gallery-overlay">
+                        <h3>Pizza Artisanale</h3>
+                        <p>Pâte maison et ingrédients de qualité supérieure</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="gallery-card">
+                    <img src="{{ asset('images/plat/plat2.jpeg') }}" class="gallery-img" alt="Dessert gourmand">
+                    <div class="gallery-overlay">
+                        <h3>Dessert Gourmand</h3>
+                        <p>Pour terminer votre repas en beauté</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="menus-section bg-light py-5" id="galerie" >
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-dark mb-3">Découvrez nos menus</h2>
+            <p class="lead text-muted">Une expérience gastronomique entre tradition et modernité</p>
+            <div class="divider mx-auto"></div>
+        </div>
+        
+        <div class="row justify-content-center g-5">
+            <!-- Menu de la semaine -->
+            <div class="col-lg-5 col-md-6">
+                <div class="simple-menu-card text-center">
+                    <div class="menu-image-container">
+                        <img src="{{ asset('images/menus/menuSemaine.jpg') }}" alt="Menu de la semaine" class="menu-img">
+                    </div>
+                    <div class="menu-content mt-4">
+                        <h3 class="menu-title">Menu du Marché</h3>
+                        <p class="menu-description">Du lundi au vendredi midi<br>Produits frais et de saison</p>
+                        <div class="price-section mb-3">
+                            <span class="price">25€</span>
+                            <span class="price-note">menu complet</span>
+                        </div>
+                        <a href="{{ asset('images/menus/menuSemaine.jpg') }}" class="btn-simple-menu" target="_blank" rel="noopener noreferrer">
+                            Voir le menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Carte complète -->
+            <div class="col-lg-5 col-md-6">
+                <div class="simple-menu-card text-center">
+                    <div class="menu-image-container">
+                        <img src="{{ asset('images/menus/menuComplet.png') }}" alt="Carte complète" class="menu-img">
+                    </div>
+                    <div class="menu-content mt-4">
+                        <h3 class="menu-title">Carte Signature</h3>
+                        <p class="menu-description">Toute l'année<br>Spécialités franco-italiennes</p>
+                        <div class="price-section mb-3">
+                            <span class="price">Sur mesure</span>
+                            <span class="price-note">à la carte</span>
+                        </div>
+                        <a href="{{ asset('images/menus/menuComplet.png') }}" class="btn-simple-menu" target="_blank" rel="noopener noreferrer">
+                            Explorer la carte
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="marron-band">
+    <div class="container">
+        <div class="diamonds-container-bande">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="•" class="diamond">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="•" class="diamond">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="•" class="diamond">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="•" class="diamond">
+            <img src="{{ asset('images/icons/60x60_gold.svg') }}" alt="•" class="diamond">
+        </div>
+    </div>
+</section>
+
+<section class="services-section">
+    <div class="container">
+        <h2 class="section-title">Nos Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-logo">
+                   <img src="{{ asset('images/vignettes/services/restaurant.png') }}" alt="Restaurant" class="service-icon">
+                </div>
+                <h3 class="service-title">Restaurant</h3>
+            </div>
+
+            <div class="service-card">
+                <div class="service-logo">
+                    <img src="{{ asset('images/vignettes/services/bar.png') }}" alt="Bar" class="service-icon">
+                </div>
+                <h3 class="service-title">Bar</h3>
+            </div>
+
+            <div class="service-card">
+                <div class="service-logo">
+                    <img src="{{ asset('images/vignettes/services/terrasse.png') }}" alt="Terrasse" class="service-icon">
+                </div>
+                <h3 class="service-title">Terrasse</h3>
+            </div>
+
+            <div class="service-card">
+                <div class="service-logo">
+                    <img src="{{ asset('images/vignettes/services/pizza_emporter.png') }}" alt="Pizzas à emporter" class="service-icon">
+                </div>
+                <h3 class="service-title">Pizzas à emporter</h3>
+            </div>
+
+            <div class="service-card">
+                <div class="service-logo">
+                    <img src="{{ asset('images/vignettes/services/vegetarien.png') }}" alt="Options végétariennes" class="service-icon">
+                </div>
+                <h3 class="service-title">Options végétariennes</h3>
+            </div>
+
+            <div class="service-card">
+                <div class="service-logo">
+                    <img src="{{ asset('images/vignettes/services/evenement.png') }}" alt="Événements" class="service-icon">
+                </div>
+                <h3 class="service-title">Événements</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="payment-section">
+    <div class="container">
+        <h2 class="payment-title">Options de paiement</h2>
+        <div class="payment-grid">
+            <div class="payment-card">
+                <div class="payment-logo">
+                    <img src="{{ asset('images/vignettes/paiement/sans_contact.png') }}" alt="Sans contact" class="payment-icon">
+                </div>
+                <span class="payment-name">Sans contact</span>
+            </div>
+
+            <div class="payment-card">
+                <div class="payment-logo">
+                    <img src="{{ asset('images/vignettes/paiement/mastercard.png') }}" alt="Mastercard" class="payment-icon">
+                </div>
+                <span class="payment-name">Mastercard</span>
+            </div>
+
+            <div class="payment-card">
+                <div class="payment-logo">
+                    <img src="{{ asset('images/vignettes/paiement/visa.png') }}" alt="VISA" class="payment-icon">
+                </div>
+                <span class="payment-name">VISA</span>
+            </div>
+
+            <div class="payment-card">
+                <div class="payment-logo">
+                    <img src="{{ asset('images/vignettes/paiement/maestro.png') }}" alt="Maestro" class="payment-icon">
+                </div>
+                <span class="payment-name">Maestro</span>
+            </div>
+
+            <div class="payment-card">
+                <div class="payment-logo">
+                    <img src="{{ asset('images/vignettes/paiement/apple_pay.png') }}" alt="Apple Pay" class="payment-icon">
+                </div>
+                <span class="payment-name">Apple Pay</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="events-section">
+    <div class="container">
+        <div class="diamonds-container diamonds-solo">
+            <img src="{{ asset('images/icons/60x60_blue.svg') }}" alt="•" class="diamond">
+        </div>
+        <div class="events-content">
+            <div class="events-text">
+                <h2 class="events-title">Événements du CAP</h2>
+                <p class="events-description">
+                    Au CAP de Poitiers, participez à nos évènements ou créez le vôtre : 
+                    privatisez nos espaces pour vos moments uniques.
+                </p>
+                <button class="contact-btn">
+                    Nous contacter
+                </button>
+            </div>
+            <div class="events-image">
+                <img src="{{ asset('images/evenements/karaoke.jpeg') }}" alt="Événements au CAP de Poitiers">
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

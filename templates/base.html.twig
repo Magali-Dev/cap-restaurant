@@ -1,48 +1,40 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Restaurant Le Cap - Accueil{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🍕</text></svg>">
-        
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="{% block meta_description %}Restaurant Le Cap Ristobar - Cuisine méditerranéenne et ambiance chaleureuse{% endblock %}">
+    
+    <title>{% block title %}Restaurant Le Cap Ristobar{% endblock %}</title>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {# Navigation simple #}
-        <header style="background: #2c3e50; color: white; padding: 1rem;">
-            <nav style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;">
-                <h1 style="margin: 0;">🍕 Restaurant Le Cap</h1>
-                <div>
-                    <a href="{{ path('app_home') }}" style="color: white; margin: 0 1rem; text-decoration: none;">Accueil</a>
-                    <a href= "#" style="color: white; margin: 0 1rem; text-decoration: none;">Menu</a>
-                    <a href="#" style="color: white; margin: 0 1rem; text-decoration: none;">Réservation</a>
-                    <a href="#" style="color: white; margin: 0 1rem; text-decoration: none;">Contact</a>
-                </div>
-            </nav>
-        </header>
+    {# Bootstrap en PREMIER #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    
+    {# Votre CSS en DEUXIEME (pour écraser Bootstrap) #}
+    <link rel="stylesheet" href="{{ asset('build/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amarante&family=Cinzel:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+<body>
+    {% include 'includes/_header.html.twig' %}
+    
+    <main role="main">
+        {% block body %}{% endblock %}
+    </main>
+    
+    {% include 'includes/_footer.html.twig' %}
 
-        {# Contenu principal #}
-        <main style="min-height: 80vh; padding: 2rem;">
-            {% block body %}
-                <div style="text-align: center; padding: 4rem 0;">
-                    <h2>Bienvenue au Restaurant Le Cap</h2>
-                    <p>Une expérience culinaire exceptionnelle</p>
-                    <a href="#" style="background: #e74c3c; color: white; padding: 1rem 2rem; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 1rem;">
-                        Réserver une table
-                    </a>
-                </div>
-            {% endblock %}
-        </main>
-
-        {# Pied de page #}
-        <footer style="background: #34495e; color: white; text-align: center; padding: 2rem; margin-top: 2rem;">
-            <p>&copy; {{ "now"|date("Y") }} Restaurant Le Cap - Tous droits réservés</p>
-            <p>📞 01 23 45 67 89 | 📍 123 Avenue du Restaurant, 75000 Paris</p>
-        </footer>
-    </body>
+    {# JavaScript #}
+    <script src="{{ asset('build/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    
+    {% block javascripts %}
+    {% endblock %}
+</body>
 </html>

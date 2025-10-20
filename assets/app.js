@@ -1,10 +1,20 @@
-import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
-import './styles/app.css';
+// LIENS AVEC ANCRE 
+    document.querySelectorAll('a[href*="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.includes('#') && href !== '#') {
+                const targetId = href.split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - navbarHeight;
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });

@@ -1,0 +1,162 @@
+/*FOOTER*/
+.footer {
+    background-color: #102F3C;
+    color: white;
+    padding: 50px 0 20px;
+}
+
+.footer-content {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    gap: 0;
+}
+
+/* Colonnes */
+.footer-left,
+.footer-middle,
+.footer-right {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Largeur et espacement des colonnes */
+.footer-left { flex: 0 0 30%; padding-right: 40px; }
+.footer-middle { 
+    flex: 0 0 30%; 
+    padding: 0 40px; 
+    border-left: 4px solid rgba(255,255,255,0.2);
+    height: fit-content;
+    align-items: flex-start;
+    text-align: left;
+}
+.footer-right { flex: 0 0 35%; padding-left: 40px; }
+
+/* Titres */
+.footer-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Texte */
+.footer-text { color: #ccc; margin-bottom: 15px; font-size: 14px; line-height: 1.5; }
+
+/* Carte */
+.map-container {
+    background-color: rgba(255,255,255,0.1);
+    height: 180px;
+    border-radius: 4px;
+    margin: 10px 0 25px;
+    overflow: hidden;
+}
+
+/* Horaires */
+.hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+.day { font-weight: 500; color: #fff; font-size: 14px; }
+.hours { text-align: right; color: #ccc; font-size: 13px; }
+.closed { color: #ff6b6b; font-style: italic; font-size: 14px; text-align: right; }
+
+/* Contact */
+.contact-info { margin-bottom: 25px; }
+.contact-link {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+}
+.contact-link:hover { color: #fff; }
+.contact-icon { margin-right: 8px; width: 16px; height: 16px; }
+
+/* Réseaux sociaux */
+.social-links { display: flex; gap: 15px; margin: 15px 0 25px; }
+.social-icon { width: 22px; height: 22px; filter: brightness(0) invert(1); }
+
+/* Liens utiles */
+.useful-links { list-style: none; text-align: left; }
+.useful-links li { margin-bottom: 8px; }
+.useful-links a { color: #ccc; text-decoration: none; font-size: 14px; }
+.useful-links a:hover { color: #fff; }
+
+/* Formulaire */
+.contact-form { display: flex; flex-direction: column; }
+.form-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #fff;
+    text-align: center;
+}
+.form-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.4;
+    color: #fff;
+    text-align: center;
+}
+.form-group { margin-bottom: 12px; }
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+}
+.form-input::placeholder { color: #aaa; }
+.form-textarea { resize: vertical; min-height: 80px; }
+.submit-btn {
+    background-color: #1a4a5a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+.submit-btn:hover { background-color: #2a6a7a; }
+
+/* Bas de page */
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    color: #ccc;
+    font-size: 14px;
+}
+
+/* Logo */
+.logo-container { margin-bottom: 20px; text-align: center; width: 100%; }
+.footer-logo { max-width: 120px; height: auto; margin-top: 5rem; }
+
+/* Espacement des sections */
+.section-spacing { margin-bottom: 30px; }
+
+/* RESPONSIVE*/
+@media (max-width: 768px) {
+    .footer-content { flex-direction: column; gap: 30px; }
+    .footer-left, .footer-middle, .footer-right {
+        flex: 1;
+        text-align: center;
+        padding: 0;
+        border: none;
+        align-items: center;
+    }
+    .footer-middle {
+        border-top: 1px solid rgba(255,255,255,0.2);
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        padding: 30px 0;
+    }
+    .hours-grid { max-width: 300px; }
+    .useful-links { text-align: center; }
+    .contact-link { justify-content: center; }
+}
