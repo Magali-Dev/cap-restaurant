@@ -1,14 +1,39 @@
-@import './components/navbar.css';
-@import './pages/home.css';
-@import './components/footer.css';
+:root {
+    /* colors */
+    --midnight-blue: #102f3c;
+    --sky-blue: #267393;
+    --cream: #ebe1d4;
+    --dark-copper: #95542e;
+    --light-copper: #d5825b;
+    --white: #fff;
+    --leaf: #33af42;
+    --pale-leaf: #97b29a;
+
+    /* fonts */
+    --titles-font: "Afacad", serif;
+    --text-font: "Afacad", sans-serif;
+    --banner-font: "Amarante", serif;
+
+    /* Afacad weight */
+    --regular: 400; /* footer text */
+    --medium: 500; /* text, button */
+    --semibold: 600; /* subtitle, span */
+    --bold: 700; /* title, nav */
+}
+
+@import "./components/navbar.css";
+@import "./pages/home.css";
+@import "./components/footer.css";
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-body{ font-family: 'Afacad', serif;}
+body {
+    font-family: var(--titles-font);
+}
 .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding:2rem 3rem ;
-        }
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 3rem;
+}
