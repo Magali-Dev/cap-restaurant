@@ -1,3 +1,7 @@
+@import "./components/navbar.css";
+@import "./pages/home.css";
+@import "./components/footer.css";
+
 :root {
     /* colors */
     --midnight-blue: #102f3c;
@@ -20,10 +24,6 @@
     --semibold: 600; /* subtitle, span */
     --bold: 700; /* title, nav */
 }
-
-@import "./components/navbar.css";
-@import "./pages/home.css";
-@import "./components/footer.css";
 * {
     margin: 0;
     padding: 0;
