@@ -351,8 +351,10 @@ Tests réalisés avec Lighthouse, axe DevTools, simulateur mobile Chrome.
 
 ### Hébergement
 
+```diff
 -   Planethoster (mutualisé ou dédié)
 -   Serveur LAMP compatible Symfony
+```
 
 ### Procédure
 
@@ -371,8 +373,9 @@ git push production main
 ## 16. Présentation pour l’examen
 
 ```diff
-### Exemple :
--
+- ### Exemple :
+```
+
 ⏱️ Durée totale : 6 à 8 minutes
 | Étape | Temps | Contenu |
 | --- | --- | --- |
@@ -382,7 +385,9 @@ git push production main
 | Accessibilité & UX | 1 min | Responsive, contrastes, ARIA |
 | Tests & déploiement | 1 min | Lighthouse + Go-live |
 | Améliorations futures | 30 sec | Commande en ligne, Stripe |
--
+
+```diff
+- ### Fin d'exemple
 ```
 
 ### Points à montrer
@@ -397,9 +402,11 @@ git push production main
 
 ## 17. Contact des développeuses
 
-> 👩‍💻 **Magali Bernardin-Bichet** \
-> 📍 ville, France \
-> 🗃️ [GitHub](https://github.com/Magali-Dev)
+```diff
+!> 👩‍💻 **Magali Bernardin-Bichet** \
+!> 📍 ville, France \
+!> 🗃️ [GitHub](https://github.com/Magali-Dev)
+```
 
 > 👩‍💻 **Madeline Ricateau** \
 > 📍 Chasseneuil-du-Poitou, France \
