@@ -1,14 +1,77 @@
-@import './components/navbar.css';
-@import './pages/home.css';
-@import './components/footer.css';
+@import "./components/navbar.css";
+@import "./pages/home.css";
+@import "./components/footer.css";
+
+:root {
+    /* colors */
+    --midnight-blue: #102f3c;
+    --sky-blue: #267393;
+    --cream: #edd9c0;
+    --dark-copper: #95542e;
+    --light-copper: #d5825b;
+    --white: #fff;
+    --leaf: #33af42;
+    --pale-leaf: #97b29a;
+    --shadow: 4px 4px 4px #00000066;
+
+    /* fonts */
+    --titles-font: "Afacad", sans-serif;
+    --text-font: "Afacad", serif;
+    --banner-font: "Amarante", serif;
+
+    /* Afacad weight */
+    --regular: 400; /* footer text */
+    --medium: 500; /* text, button */
+    --semibold: 600; /* subtitle, span */
+    --bold: 700; /* title, nav */
+
+    /* Actions */
+    --transition: all 0.3s ease;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-body{ font-family: 'Afacad', serif;}
+body {
+    font-family: var(--text-font);
+}
 .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding:2rem 3rem ;
-        }
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 3rem;
+}
+.title {
+    font-family: var(--titles-font);
+    font-weight: var(--semibold);
+    text-transform: uppercase;
+}
+.text {
+    font-family: var(--text-font);
+    font-weight: var(--medium);
+}
+.banner-font {
+    font-family: var(--banner-font);
+}
+.regular {
+    font-weight: var(--regular);
+}
+.semibold {
+    font-weight: var(--semibold);
+}
+.white {
+    color: var(--white);
+}
+.midnight-background {
+    background-color: var(--midnight-blue);
+}
+.text-shadow {
+    text-shadow: var(--shadow);
+}
+.box-shadow {
+    box-shadow: var(--shadow);
+}
+.smooth-transition {
+    transition: var(--transition);
+}
