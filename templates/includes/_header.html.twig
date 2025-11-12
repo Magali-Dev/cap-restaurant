@@ -1,6 +1,6 @@
 <header class="navbar midnight-background shadow">
     <div class="navbar-container">
-        <button class="burger-menu" id="burgerMenu" aria-label="Ouvrir le menu" aria-expanded="false">
+        <button class="burger-menu icon-link smooth-transition box-shadow" id="burgerMenu" aria-label="Ouvrir le menu" aria-expanded="false">
             <div class="burger-line"></div>
             <div class="burger-line"></div>
             <div class="burger-line"></div>
@@ -21,7 +21,7 @@
 
         <div class="nav-right">
             <a href="#" class="button button-reservation title nav-link-fontsize white box-shadow smooth-transition">Réservation de table</a>
-            <a href="#" class="button button-order title nav-link-fontsize box-shadow smooth-transition">Commande de pizzas</a>
+            <a href="#" class="button button-order title nav-link-fontsize box-shadow smooth-transition">Commande en ligne</a>
             <a href="#" class="icon-link smooth-transition box-shadow "><i class="fa-solid fa-user-lock fa-icon fa-xl"></i></a>
             <a href="#" class="icon-link smooth-transition box-shadow "><i class="fas fa-shopping-basket fa-icon fa-xl"></i></a>
         </div>
@@ -30,12 +30,12 @@
     <!-- Menu mobile -->
     <div class="mobile-menu" id="mobileMenu">
         <button class="close-menu" id="closeMenu" aria-label="Fermer le menu">×</button>
-        <a href="{{ path('app_home') }}" class="title">Accueil</a>
-        <a href="{{ path('app_home') }}#galerie" class="title">La carte</a>
-        <a href="#">Événements</a>
-        <a href="{{ path('app_home') }}#footer" class="title">Nous contacter</a>
-        <a href="#" class="button button-reservation" style="margin-top: 20px;" class="title">Réservation de table</a>
-        <a href="#" class="button button-order" style="margin-top: 10px;" class="title">Commande de pizzas</a>
+        <a href="{{ path('app_home') }}" class="title nav-link-box nav-link-fontsize">Accueil</a>
+        <a href="{{ path('app_home') }}#galerie" class="title nav-link-box nav-link-fontsize">La carte</a>
+        <a href="#" class="title nav-link-box nav-link-fontsize">Événements</a>
+        <a href="{{ path('app_home') }}#footer" class="title nav-link-box nav-link-fontsize">Nous contacter</a>
+        <a href="#" class="button button-reservation title nav-link-fontsize">Réservation de table</a>
+        <a href="#" class="button button-order title nav-link-fontsize">Commande en ligne</a>
     </div>
 
     <div class="menu-overlay" id="menuOverlay"></div>
