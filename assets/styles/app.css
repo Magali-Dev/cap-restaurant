@@ -13,7 +13,7 @@
 @import './pages/user/profile.css';
 
 :root {
-    /* Couleurs existantes + nouvelles */
+    /* Couleurs */
     --midnight-blue: #102f3c;
     --sky-blue: #267393;
     --cream: #edd9c0;
@@ -48,59 +48,76 @@
     --text-font: "Afacad", serif;
     --banner-font: "Amarante", serif;
 
-    /* Afacad weight */
-    --regular: 400; /* footer text */
-    --medium: 500; /* text, button */
-    --semibold: 600; /* subtitle, span */
-    --bold: 700; /* title, nav */
+    /* Font weights */
+    --regular: 400;
+    --medium: 500;
+    --semibold: 600;
+    --bold: 700;
 
+    /* Transition */
     --transition: all 0.3s ease;
 }
 
-/* Reste du CSS inchangé */
+/* Global reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     font-family: var(--text-font);
 }
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 3rem;
 }
+
+/* Text utilities */
 .title {
     font-family: var(--titles-font);
     font-weight: var(--semibold);
     text-transform: uppercase;
 }
+
 .text {
     font-family: var(--text-font);
     font-weight: var(--medium);
 }
+
 .banner-font {
     font-family: var(--banner-font);
 }
+
 .regular {
     font-weight: var(--regular);
 }
+
 .semibold {
     font-weight: var(--semibold);
 }
+
 .white {
     color: var(--white);
 }
+
+/* Backgrounds */
 .midnight-background {
     background-color: var(--midnight-blue);
 }
+
+/* Shadows */
 .text-shadow {
     text-shadow: var(--shadow);
 }
+
 .box-shadow {
     box-shadow: var(--shadow);
 }
+
+/* Transitions */
 .smooth-transition {
     transition: var(--transition);
 }

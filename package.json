@@ -1,37 +1,40 @@
 {
-    "name": "cap-restaurant",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "directories": {
-        "test": "tests"
-    },
-    "scripts": {
-        "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start-kill": "cmd /c \"taskkill /IM php-cgi.exe /F\" && symfony local:server:stop --all && symfony local:server:start",
-        "start": "cmd /c symfony local:server:stop --all && symfony local:server:start",
-        "stop": "cmd /c && symfony local:server:stop --all"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Magali-Dev/cap-restaurant.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "type": "commonjs",
-    "bugs": {
-        "url": "https://github.com/Magali-Dev/cap-restaurant/issues"
-    },
-    "homepage": "https://github.com/Magali-Dev/cap-restaurant#readme",
-    "devDependencies": {
-        "@symfony/webpack-encore": "^5.2.0",
-        "postcss": "^8.5.6",
-        "postcss-loader": "^8.2.0",
-        "webpack-notifier": "^1.15.0"
-    }
+  "name": "cap-restaurant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-kill": "cmd /c \"taskkill /IM php-cgi.exe /F\" && symfony local:server:stop --all && symfony local:server:start",
+    "start": "cmd /c symfony local:server:stop --all && symfony local:server:start",
+    "stop": "cmd /c && symfony local:server:stop --all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magali-Dev/cap-restaurant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Magali-Dev/cap-restaurant/issues"
+  },
+  "homepage": "https://github.com/Magali-Dev/cap-restaurant#readme",
+  "devDependencies": {
+    "@symfony/webpack-encore": "^5.2.0",
+    "postcss": "^8.5.6",
+    "postcss-loader": "^8.2.0",
+    "webpack-notifier": "^1.15.0",
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "babel-loader": "^9.1.3"
+  }
 }
