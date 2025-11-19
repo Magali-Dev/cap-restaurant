@@ -1,12 +1,11 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/var/
-/vendor/
+ /var/
+ /vendor/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -23,3 +22,32 @@
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+# ---------- Webpack Encore ----------
+/node_modules/
+/public/build/
+/npm-debug.log
+/yarn-error.log
+
+# ---------- Composer ----------
+composer.lock
+
+# ---------- Logs ----------
+/var/logs/
+/var/log/
+
+# ---------- IDE ----------
+/.idea/
+/.vscode/
+/*.iml
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+
+# ---------- Cache ----------
+/tmp/
+/temp/
+
+# ---------- PHPUnit cache ----------
+/.phpunit.result.cache
