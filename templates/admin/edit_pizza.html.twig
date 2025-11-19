@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la pizza{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>✏️ Modifier la pizza</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <form method="post" action="{{ path('admin_pizzas_edit', {'id': pizza.id}) }}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" id="nom" name="nom" class="form-control" value="{{ pizza.nom }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="prix" class="form-label">Prix (€)</label>
+            <input type="number" step="0.01" id="prix" name="prix" class="form-control" value="{{ pizza.prix }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="vegetarien" class="form-check-label">Végétarien</label>
+            <input type="checkbox" id="vegetarien" name="vegetarien" class="form-check-input" {% if pizza.vegetarien %}checked{% endif %}>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" name="description" class="form-control">{{ pizza.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="allergenes" class="form-label">Allergènes (séparés par des virgules)</label>
+            <input type="text" id="allergenes" name="allergenes" class="form-control" value="{{ pizza.allergenes ? pizza.allergenes|join(', ') }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" id="image" name="image" class="form-control">
+            {% if pizza.image %}
+                <p class="mt-2">Image actuelle :</p>
+                <img src="{{ asset('uploads/pizzas/' ~ pizza.image) }}" alt="{{ pizza.nom }}" style="max-width:200px; height:auto;">
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="{{ path('admin_pizzas_index') }}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation - Restaurant Le Cap{% endblock %}
+
+{% block body %}
+<section class="container">
+    <h1 class="text-center">Réserver une table</h1>
+
+    <!-- Alerte si les réservations en ligne sont désactivées -->
+    {% if not limiter_service.isOnlineReservationEnabled() %}
+        <div class="alert alert-warning text-center">
+            <strong>⚠️ Information importante :</strong> 
+            Les réservations en ligne sont temporairement désactivées. 
+            Veuillez nous appeler au <strong>05 49 53 28 76</strong> pour réserver.
+        </div>
+    {% endif %}
+
+    <p class="text-center">
+        Pour les groupes de plus de <strong>14 personnes</strong>, merci de 
+        <a href="{{ path('reservation_new') }}#footer">nous contacter ici</a>.
+    </p>
+
+    <div class="reservation-form-container mx-auto">
+        {{ form_start(form) }}
+
+        <!-- Ligne prénom + nom -->
+        <div class="form-row">
+            <div>{{ form_row(form.prenom) }}</div>
+            <div>{{ form_row(form.nom) }}</div>
+        </div>
+
+        <!-- Ligne téléphone + email -->
+        <div class="form-row">
+            <div>{{ form_row(form.telephone) }}</div>
+            <div>{{ form_row(form.email) }}</div>
+        </div>
+
+        <!-- Ligne nombre de personnes + date + heure -->
+        <div class="form-row">
+            <div>{{ form_row(form.nombrePersonnes) }}</div>
+            <div>{{ form_row(form.dateReservation) }}</div>
+            <div>{{ form_row(form.heureReservation) }}</div>
+        </div>
+
+        <!-- Ligne allergie + message -->
+        <div class="form-row">
+            <div>
+                {{ form_row(form.allergie, {
+                    'attr': {'placeholder': 'Ex: fruits à coque, crustacés, gluten, lactose ...'}
+                }) }}
+            </div>
+            <div>
+                {{ form_row(form.message) }}
+                <small class="form-text text-muted">
+                    Information facultative pour adapter au mieux votre expérience.
+                </small>
+            </div>
+        </div>
+
+        <!-- Bouton -->
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" {% if not limiter_service.isOnlineReservationEnabled() %}disabled{% endif %}>
+                {% if not limiter_service.isOnlineReservationEnabled() %}
+                    RÉSERVATIONS DÉSACTIVÉES
+                {% else %}
+                    DEMANDE DE RÉSERVATION
+                {% endif %}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+
+        <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success mt-4 text-center">{{ message }}</div>
+        {% endfor %}
+
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger mt-4 text-center">{{ message }}</div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ======== SCRIPTS ======== -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.querySelector('#reservation_dateReservation');
+    const heureSelect = document.querySelector('#reservation_heureReservation');
+
+    async function updateCreneaux() {
+        const date = dateInput.value;
+        if (!date) return;
+
+        const response = await fetch(`/reservation/creneaux-disponibles?date=${date}`);
+        const data = await response.json();
+        if (data.error) return;
+
+        heureSelect.innerHTML = '';
+        const now = new Date();
+        const today = now.toISOString().slice(0, 10);
+
+        const horaires = Object.keys(data.placesRestantesParCreneau);
+        let anyAvailable = false;
+
+        horaires.forEach(horaire => {
+            const placesRestantes = data.placesRestantesParCreneau[horaire] ?? 0;
+
+            // Bloquer les créneaux passés si c'est aujourd'hui
+            if (date === today) {
+                const [h, m] = horaire.split(':');
+                const optionTime = new Date();
+                optionTime.setHours(parseInt(h), parseInt(m), 0, 0);
+                if (optionTime <= now) return;
+            }
+
+            const opt = document.createElement('option');
+            opt.value = horaire;
+
+            if (placesRestantes > 0) {
+                opt.textContent = `${horaire} – ${placesRestantes} place(s) restantes`;
+                anyAvailable = true;
+            } else {
+                opt.textContent = `${horaire} – Indisponible`;
+                opt.disabled = true;
+            }
+
+            heureSelect.appendChild(opt);
+        });
+
+        if (!anyAvailable) {
+            const opt = document.createElement('option');
+            opt.textContent = 'Aucun créneau disponible pour cette date';
+            opt.disabled = true;
+            heureSelect.appendChild(opt);
+        }
+    }
+
+    dateInput.addEventListener('change', updateCreneaux);
+    if (dateInput.value) updateCreneaux();
+
+    // ✅ Récupération des dates désactivées depuis Symfony
+    const disabledDates = {{ limiter_service.getDisabledDates()|json_encode|raw }};
+
+    // ✅ Initialisation du calendrier
+    flatpickr("#reservation_dateReservation", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        disable: [
+            ...disabledDates, // désactive les dates renvoyées par le service
+            function(date) {
+                return date.getDay() === 0; // ferme le dimanche
+            }
+        ],
+        onChange: function(selectedDates, dateStr, instance) {
+            updateCreneaux();
+        }
+    });
+});
+</script>
+
+<style>
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+}
+.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+}
+.alert-success {
+    background-color: #d1fae5;
+    border-color: #a7f3d0;
+    color: #065f46;
+}
+.alert-danger {
+    background-color: #fee2e2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+.btn:disabled {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.reservation-form-container {
+    position: relative;
+}
+/* Formulaire désactivé visuellement */
+{% if not limiter_service.isOnlineReservationEnabled() %}
+.reservation-form-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    border-radius: 8px;
+}
+{% endif %}
+</style>
+{% endblock %}

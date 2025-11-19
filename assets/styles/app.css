@@ -1,9 +1,19 @@
-@import "./components/navbar.css";
-@import "./pages/home.css";
-@import "./components/footer.css";
+/* Components */
+@import './components/navbar.css';
+@import './components/footer.css';
+
+/* Pages */
+@import './pages/reservation/reservation.css';
+@import './pages/home.css';
+@import './pages/admin/dashboard.css';
+@import './pages/admin/admin.css';
+@import './pages/commande/commande.css';
+@import './pages/security/login-register.css';
+@import './pages/panier/panier.css';
+@import './pages/user/profile.css';
 
 :root {
-    /* colors */
+    /* Couleurs existantes + nouvelles */
     --midnight-blue: #102f3c;
     --sky-blue: #267393;
     --cream: #edd9c0;
@@ -12,9 +22,28 @@
     --white: #fff;
     --leaf: #33af42;
     --pale-leaf: #97b29a;
-    --shadow: 4px 4px 4px #00000066;
 
-    /* fonts */
+    --primary-dark: #0e2c35;
+    --primary-orange: #d84b2a;
+    --primary-gold: #d9a55c;
+    --text-light: #ffffff;
+    --text-dark: #0e2c35;
+    --text-gray: #6b7280;
+    --bg-light: #f8fafc;
+    --border-color: #e5e7eb;
+    --success-color: #10b981;
+    --error-color: #ef4444;
+    --warning-color: #dc2626;
+    --warning-bg: #fef2f2;
+    --warning-border: #fecaca;
+
+    /* Shadows */
+    --shadow: 4px 4px 4px #00000066;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+    /* Fonts */
     --titles-font: "Afacad", sans-serif;
     --text-font: "Afacad", serif;
     --banner-font: "Amarante", serif;
@@ -25,10 +54,10 @@
     --semibold: 600; /* subtitle, span */
     --bold: 700; /* title, nav */
 
-    /* Actions */
     --transition: all 0.3s ease;
 }
 
+/* Reste du CSS inchangé */
 * {
     margin: 0;
     padding: 0;

@@ -1,0 +1,40 @@
+{# templates/user/profile.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Compte - Le Cap Ristobar{% endblock %}
+
+{% block body %}
+<section class="profile-section">
+    <div class="container">
+        <div class="profile-header">
+            <h1>Mon Compte</h1>
+            <p>Bienvenue, {{ app.user.prenom ?? app.user.nom }} !</p>
+        </div>
+        
+        <div class="profile-grid">
+            <div class="profile-card">
+                <h3>Mes Informations</h3>
+                <div class="profile-info">
+                    <p><strong>Nom :</strong> {{ app.user.nom }}</p>
+                    <p><strong>Prénom :</strong> {{ app.user.prenom ?? 'Non renseigné' }}</p>
+                    <p><strong>Email :</strong> {{ app.user.email }}</p>
+                    <p><strong>Téléphone :</strong> {{ app.user.numeroTelephone ?? 'Non renseigné' }}</p>
+                </div>
+                <a href="#" class="btn btn-primary">Modifier mes informations</a>
+            </div>
+            
+            <div class="profile-card">
+                <h3>Mes Réservations</h3>
+                <p>Consultez l'historique de vos réservations.</p>
+                <a href="#" class="btn btn-outline">Voir mes réservations</a>
+            </div>
+            
+            <div class="profile-card">
+                <h3>Mes Commandes</h3>
+                <p>Retrouvez vos commandes passées.</p>
+                <a href="{{ path('app_commandes') }}" class="btn btn-outline">Voir mes commandes</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

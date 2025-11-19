@@ -1,0 +1,106 @@
+/* Conteneur du formulaire */
+.reservation-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Titres */
+h1 {
+    font-family: 'Afacad', serif;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #102F3C;
+    text-align: center;
+    margin: 2rem 0 1rem 0;
+}
+
+.text-center p {
+    font-family: 'Afacad', serif;
+    font-size: 1rem;
+    color: #121212;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+p a {
+    font-family: 'Afacad', serif;
+    color:#102F3C;
+    text-decoration: underline;
+}
+
+p a:hover {
+    text-decoration: none;
+}
+
+/* Grille pour les champs sur la même ligne */
+.form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-row > div {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Labels */
+form label {
+    font-weight: 600;
+    color: #0f1a2c;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+/* Champs de saisie (input, select, textarea) */
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: none;
+    background-color: #e7d8c9;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.2s ease;
+    min-height: 45px; /* même hauteur pour tous */
+    resize: none;     /* empêche de redimensionner le textarea */
+}
+
+/* Focus */
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #b88c5a;
+}
+
+/* Bouton de soumission */
+button.btn {
+    background-color: #8b5a2b;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: flex-end;
+}
+
+button.btn:hover {
+    background-color: #3a2511;
+}
+
+/* Message de succès */
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+

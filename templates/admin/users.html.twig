@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs - Le Cap Ristobar{% endblock %}
+
+{% block body %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>👥 Gestion des utilisateurs</h1>
+        <a href="{{ path('admin_dashboard') }}" class="back-link">← Retour au tableau de bord</a>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            <div class="alert-icon">✅</div>
+            <div class="alert-message">{{ message }}</div>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-error">
+            <div class="alert-icon">❌</div>
+            <div class="alert-message">{{ message }}</div>
+        </div>
+    {% endfor %}
+
+    <div class="users-table-container">
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Rôle</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            <div class="user-info">
+                                <strong>{{ user.prenom }} {{ user.nom }}</strong>
+                                {% if user.id == app.user.id %}
+                                    <span class="you-badge">(Vous)</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.numerotelephone %}
+                                <div class="phone-info">
+                                    <i class="fas fa-phone"></i>
+                                    {{ user.numerotelephone }}
+                                </div>
+                            {% else %}
+                                <span class="text-muted">Non renseigné</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="role-badge {{ 'ROLE_ADMIN' in user.roles ? 'role-admin' : 'role-user' }}">
+                                {{ 'ROLE_ADMIN' in user.roles ? '👑 Administrateur' : '👤 Utilisateur' }}
+                            </span>
+                        </td>
+                        <td class="actions">
+                            {% if 'ROLE_ADMIN' not in user.roles %}
+                                <form method="post" action="{{ path('admin_user_make_admin', {'id': user.id}) }}" style="display: inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('make-admin-' ~ user.id) }}">
+                                    <button type="submit" class="btn-action btn-promote" onclick="return confirm('Promouvoir cet utilisateur administrateur ?')">
+                                        👑 Promouvoir
+                                    </button>
+                                </form>
+                            {% else %}
+                                {% if user.id != app.user.id %}
+                                    <form method="post" action="{{ path('admin_user_remove_admin', {'id': user.id}) }}" style="display: inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('remove-admin-' ~ user.id) }}">
+                                        <button type="submit" class="btn-action btn-demote" onclick="return confirm('Retirer les droits administrateur ?')">
+                                            👥 Rétrograder
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <span class="text-muted">Vous</span>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun utilisateur trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

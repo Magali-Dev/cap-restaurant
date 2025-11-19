@@ -127,7 +127,107 @@ header.navbar {
     transform: translateY(-40px);
     pointer-events: none;
 }
+<<<<<<< HEAD
 .banner-image {
+=======
+@keyframes slideDown {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+/* Le reste de votre CSS inchangé */
+.navbar-container {
+    width: 90%;
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-left a {
+    color: var(--text-light);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    font-weight: 700;
+}
+
+.nav-left a:hover {
+    color: var(--primary-gold);
+}
+
+.nav-logo img {
+    height: 100px;
+    transition: var(--transition);
+}
+/*NAVIGATION DROITE */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/*BOUTONS */
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: var(--transition);
+    white-space: nowrap;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background-color: var(--primary-orange);
+    color: var(--text-light);
+    border-radius: 10px;
+    border-color: var(--primary-orange);
+}
+
+.btn-primary:hover {
+    background-color: #c44124;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border-color: var(--primary-orange);
+    color: var(--primary-orange);
+    border-radius: 10px;
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-orange);
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+/*ICONES*/
+.icon-link {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: var(--transition);
+    padding: 5px;
+}
+
+.icon-link:hover {
+    color: var(--primary-gold);
+}
+
+/*HERO CONTENT*/
+.hero-image {
+>>>>>>> 3313662 (modification de projet)
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -254,6 +354,7 @@ body.has-scrolled-navbar {
     border-radius: 50%;
 }
 
+<<<<<<< HEAD
 /* BANNER */
 .menu-overlay {
     position: fixed;
@@ -277,6 +378,99 @@ body.has-scrolled-navbar {
     }
     .burger-menu {
         display: flex;
+=======
+.cart-count {
+    position: absolute;
+    top: -3px;
+    right: -5px;
+    background: #28a745;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+}
+.cart-count.bump { transform: scale(1.3); }
+
+.mini-cart-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    z-index: 999;
+}
+.cart-count {
+    position: absolute;
+    top: -3px;
+    right: -5px;
+    background: #28a745;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+}
+.cart-count.bump { transform: scale(1.3); }
+
+.mini-cart-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background: #3f0202;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    z-index: 999;
+}
+
+.mini-cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.mini-cart-item-sup {
+    font-size: 0.8rem;
+    color: #28a745;
+}
+
+.mini-cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.mini-cart-item-sup {
+    font-size: 0.8rem;
+    color: #28a745;
+}
+
+/*RESPONSIVE DESIGN*/
+@media (max-width: 1200px) {
+    .nav-left, .nav-right {
+        gap: 25px;
+>>>>>>> 3313662 (modification de projet)
     }
 }
 
@@ -330,3 +524,221 @@ body.has-scrolled-navbar {
         flex-wrap: wrap;
     }
 }
+<<<<<<< HEAD
+=======
+
+@media (max-width: 576px) {
+    .navbar-container { width: 92%; }
+    .nav-logo img { height: 60px; }
+    .icon-link { font-size: 1rem; padding: 3px; }
+    .hero-section { height: 25vh; }
+    .hero-tags { gap: 6px; }
+    .hero-tag { font-size: 1rem; letter-spacing: 0.5px; }
+    .mobile-menu { width: 85%; }
+    .separator-diamond { width: 5px; height: 5px; }
+}
+
+@media (max-width: 480px) {
+    .hero-tags { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+    .separator-diamond { display: block; width: 4px; height: 4px; }
+    .hero-tag { font-size: 0.9rem; }
+    .nav-right .icon-link { font-size: 0.9rem; }
+    .burger-menu { padding: 6px; }
+    .burger-line { width: 22px; height: 2.5px; }
+}
+
+@media (max-width: 400px) {
+    .hero-tags { gap: 5px; } 
+    .hero-tag { font-size: 0.85rem; }
+    .separator-diamond {
+        width: 6px;
+        height: 6px;
+        display: inline-block;
+    
+}
+}
+/* Styles pour les icônes de compte */
+.icon-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: var(--transition);
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+.icon-link:hover {
+    background: rgba(217, 165, 92, 0.2);
+    color: var(--primary-gold);
+    transform: translateY(-2px);
+}
+
+.icon-link i {
+    font-size: 1.1rem;
+}
+
+/* Badge pour indiquer l'état connecté */
+.user-status {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary-gold);
+    border: 2px solid var(--primary-dark);
+}
+
+/* Animation pour l'icône utilisateur connecté */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.icon-link.connected i {
+    animation: pulse 2s infinite;
+}
+
+/* Section compte dans le menu mobile */
+.mobile-account-section {
+    margin: 1.5rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-account-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: var(--transition);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.mobile-account-link:hover {
+    color: var(--primary-gold);
+    padding-left: 10px;
+}
+
+.mobile-account-link i {
+    width: 20px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Boutons dans le menu mobile */
+.mobile-btn {
+    margin-top: 10px;
+    text-align: center;
+    display: block;
+    width: 100%;
+    padding: 10px;
+}
+
+/* Responsive pour les icônes */
+@media (max-width: 768px) {
+    .icon-link {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .icon-link i {
+        font-size: 1rem;
+    }
+    
+    .user-status {
+        width: 6px;
+        height: 6px;
+        top: 1px;
+        right: 1px;
+    }
+}
+
+@media (max-width: 640px) {
+    .nav-right .icon-link {
+        font-size: 0.9rem;
+    }
+    
+    .mobile-account-link {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .icon-link {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .icon-link i {
+        font-size: 0.9rem;
+    }
+} 
+.admin-icon .fa-crown {
+    color: var(--primary-gold);
+}
+
+.user-icon .fa-user {
+    color: white;
+}
+
+.logout-icon .fa-sign-out-alt {
+    color: white;
+}
+
+.icon-link .fa-sign-in-alt {
+    color: white;
+}
+
+.icon-link .fa-shopping-basket {
+    color: white;
+}
+
+/* Styles pour les liens admin dans le menu mobile */
+.admin-link {
+    background: rgba(217, 165, 92, 0.1);
+    border-left: 3px solid var(--primary-gold);
+}
+
+.admin-link i {
+    color: var(--primary-gold);
+}
+
+/* --- Badge du panier --- */
+#cart-link {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -6px;
+    background-color: #0a2d9f;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    transform: scale(1);
+    transition: transform 0.2s ease;
+}
+
+.cart-count.bump {
+    transform: scale(1.3);
+}
+>>>>>>> 3313662 (modification de projet)

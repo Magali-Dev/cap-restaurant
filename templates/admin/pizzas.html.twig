@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les pizzas{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>🍕 Gestion des pizzas</h1>
+    <a href="{{ path('admin_pizzas_add') }}" class="btn btn-success mb-3">➕ Ajouter une pizza</a>
+
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Végétarien</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pizza in pizzas %}
+            <tr>
+                <td>{{ pizza.id }}</td>
+                <td>
+                    {% if pizza.image %}
+                        <img src="{{ asset('uploads/pizzas/' ~ pizza.image) }}" 
+                             alt="{{ pizza.nom }}" 
+                             class="img-thumbnail"
+                             style="width: 50px; height: 50px; object-fit: cover;">
+                    {% else %}
+                        <span class="text-muted">—</span>
+                    {% endif %}
+                </td>
+                <td>{{ pizza.nom }}</td>
+                <td>{{ pizza.prix|number_format(2,'.',',') }} €</td>
+                <td>{{ pizza.vegetarien ? '✅' : '❌' }}</td>
+                <td>
+                    <a href="{{ path('admin_pizzas_edit',{'id':pizza.id}) }}" class="btn btn-primary btn-sm">✏️ Modifier</a>
+                    <a href="{{ path('admin_pizzas_delete',{'id':pizza.id}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ?')">🗑️ Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6">Aucune pizza</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

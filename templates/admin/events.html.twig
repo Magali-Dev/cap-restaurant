@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Événements Admin - Le Cap Ristobar{% endblock %}
+
+{% block body %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Gestion des Événements</h1>
+        <p>Ajouter, modifier ou supprimer des événements</p>
+    </div>
+    <div class="admin-card mb-4">
+        <h2>Ajouter un événement</h2>
+        <form method="post" enctype="multipart/form-data" action="{{ path('admin_events_add') }}">
+            <div class="form-group mb-2">
+                <label for="titre">Titre</label>
+                <input type="text" name="titre" id="titre" class="form-control" placeholder="Titre de l'événement" required>
+            </div>
+            <div class="form-group mb-2">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" placeholder="Description de l'événement"></textarea>
+            </div>
+            <div class="form-group mb-2">
+                <label for="date">Date de l'événement</label>
+                <input type="datetime-local" name="date" id="date" class="form-control" required>
+            </div>
+            <div class="form-group mb-2">
+                <label for="fichier">Image</label>
+                <input type="file" name="fichier" id="fichier" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Ajouter l'événement</button>
+        </form>
+    </div>
+
+    {# Liste des événements existants #}
+    <div class="admin-card">
+        <h2>Événements existants</h2>
+
+        {% if events|length > 0 %}
+            <div class="row g-4">
+                {% for event in events %}
+                    <div class="col-md-4">
+                        <div class="gallery-card position-relative">
+                            {% if event.nomFichier %}
+                                <img src="{{ asset('uploads/events/' ~ event.nomFichier) }}" class="gallery-img img-fluid" alt="{{ event.titre }}">
+                            {% else %}
+                                <img src="{{ asset('images/default-event.png') }}" class="gallery-img img-fluid" alt="Image par défaut">
+                            {% endif %}
+
+                            
+                            <div class="gallery-overlay">
+                                <h3>{{ event.titre ?: 'Sans titre' }}</h3>
+                                <p>{{ event.description ?: 'Pas de description' }}</p>
+                                <small>Événement prévu le {{ event.dateEvenement ? event.dateEvenement|date('d/m/Y H:i') : 'Non défini' }}</small>
+                            </div>
+                            <form method="post" action="{{ path('admin_events_delete', {id: event.id}) }}" class="position-absolute top-0 end-0 m-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-event-' ~ event.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">Aucun événement pour le moment.</p>
+        {% endif %}
+    </div>
+</div>
+<style>
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.admin-header h1 {
+    font-family: "Amarante", sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.admin-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+}
+
+.gallery-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+    min-height: 250px; 
+}
+
+.gallery-card:hover {
+    transform: translateY(-3px);
+}
+
+.gallery-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: rgba(0,0,0,0.4);
+    color: white;
+    box-sizing: border-box;
+}
+</style>
+{% endblock %}

@@ -43,98 +43,75 @@
         </div>
     </div>
 </section>
-
 <section class="gallery-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="gallery-title">Galerie</h2>
-            <p class="gallery-subtitle">Quelques uns de nos plats</p>
+            <p class="gallery-subtitle">Quelques-uns de nos plats</p>
         </div>
         
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="gallery-card">
-                    <img src="{{ asset('images/plat/plat.jpeg') }}" class="gallery-img" alt="Notre spécialité">
-                    <div class="gallery-overlay">
-                        <h3>Spécialité Maison</h3>
-                        <p>Notre plat signature préparé avec des ingrédients frais</p>
+            {% for image in images %}
+                <div class="col-md-4 mb-4">
+                    <div class="gallery-card">
+                        <img src="{{ asset('uploads/gallery/' ~ image.nomFichier) }}" class="gallery-img" alt="{{ image.titre }}">
+                        <div class="gallery-overlay">
+                            <h3>{{ image.titre ?: 'Sans titre' }}</h3>
+                            <p>{{ image.description ?: 'Pas de description' }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="col-md-4 mb-4">
-                <div class="gallery-card">
-                    <img src="{{ asset('images/plat/plat1.jpeg') }}" class="gallery-img" alt="Pizza artisanale">
-                    <div class="gallery-overlay">
-                        <h3>Pizza Artisanale</h3>
-                        <p>Pâte maison et ingrédients de qualité supérieure</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 mb-4">
-                <div class="gallery-card">
-                    <img src="{{ asset('images/plat/plat2.jpeg') }}" class="gallery-img" alt="Dessert gourmand">
-                    <div class="gallery-overlay">
-                        <h3>Dessert Gourmand</h3>
-                        <p>Pour terminer votre repas en beauté</p>
-                    </div>
-                </div>
-            </div>
+            {% else %}
+                <p class="text-muted">Aucune image disponible pour le moment.</p>
+            {% endfor %}
         </div>
     </div>
 </section>
-<section class="menus-section bg-light py-5" id="galerie" >
+<section class="menus-section" id="galerie">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-5 fw-bold text-dark mb-3">Découvrez nos menus</h2>
             <p class="lead text-muted">Une expérience gastronomique entre tradition et modernité</p>
             <div class="divider mx-auto"></div>
         </div>
-        
+
         <div class="row justify-content-center g-5">
-            <!-- Menu de la semaine -->
-            <div class="col-lg-5 col-md-6">
-                <div class="simple-menu-card text-center">
-                    <div class="menu-image-container">
-                        <img src="{{ asset('images/menus/menuSemaine.jpg') }}" alt="Menu de la semaine" class="menu-img">
-                    </div>
-                    <div class="menu-content mt-4">
-                        <h3 class="menu-title">Menu du Marché</h3>
-                        <p class="menu-description">Du lundi au vendredi midi<br>Produits frais et de saison</p>
-                        <div class="price-section mb-3">
-                            <span class="price">25€</span>
-                            <span class="price-note">menu complet</span>
+            {% for menu in menus %}
+                <div class="col-lg-5 col-md-6">
+                    <div class="simple-menu-card text-center">
+                        <div class="menu-image-container">
+                            {% if menu.nomFichier %}
+                                <img src="{{ asset('uploads/menus/' ~ menu.nomFichier) }}" alt="{{ menu.titre }}" class="menu-img">
+                            {% else %}
+                                <img src="{{ asset('images/default-menu.png') }}" alt="{{ menu.titre }}" class="menu-img">
+                            {% endif %}
                         </div>
-                        <a href="{{ asset('images/menus/menuSemaine.jpg') }}" class="btn-simple-menu" target="_blank" rel="noopener noreferrer">
-                            Voir le menu
-                        </a>
+                        <div class="menu-content mt-4">
+                            <h3 class="menu-title">{{ menu.titre }}</h3>
+                            <p class="menu-description">{{ menu.description ?: 'Pas de description disponible' }}</p>
+                            {% if menu.prix is defined %}
+                                <div class="price-section mb-3">
+                                    <span class="price">{{ menu.prix }}</span>
+                                    <span class="price-note">{{ menu.notePrix ?: '' }}</span>
+                                </div>
+                            {% endif %}
+                            {% if menu.nomFichier %}
+                                <a href="{{ asset('uploads/menus/' ~ menu.nomFichier) }}" class="btn-simple-menu" target="_blank" rel="noopener noreferrer">
+                                    Voir le menu
+                                </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Carte complète -->
-            <div class="col-lg-5 col-md-6">
-                <div class="simple-menu-card text-center">
-                    <div class="menu-image-container">
-                        <img src="{{ asset('images/menus/menuComplet.png') }}" alt="Carte complète" class="menu-img">
-                    </div>
-                    <div class="menu-content mt-4">
-                        <h3 class="menu-title">Carte Signature</h3>
-                        <p class="menu-description">Toute l'année<br>Spécialités franco-italiennes</p>
-                        <div class="price-section mb-3">
-                            <span class="price">Sur mesure</span>
-                            <span class="price-note">à la carte</span>
-                        </div>
-                        <a href="{{ asset('images/menus/menuComplet.png') }}" class="btn-simple-menu" target="_blank" rel="noopener noreferrer">
-                            Explorer la carte
-                        </a>
-                    </div>
-                </div>
-            </div>
+            {% else %}
+                <p class="text-muted text-center">Aucun menu disponible pour le moment.</p>
+            {% endfor %}
         </div>
     </div>
 </section>
+
+
+
 <section class="marron-band">
     <div class="container">
         <div class="diamonds-container-bande">
@@ -238,27 +215,36 @@
     </div>
 </section>
 
-<section class="events-section">
+<section class="events-section" id="evenements">
     <div class="container">
         <div class="diamonds-container diamonds-solo">
             <img src="{{ asset('images/icons/60x60_blue.svg') }}" alt="•" class="diamond">
         </div>
-        <div class="events-content">
-            <div class="events-text">
-                <h2 class="events-title">Événements du CAP</h2>
-                <p class="events-description">
-                    Au CAP de Poitiers, participez à nos évènements ou créez le vôtre : 
-                    privatisez nos espaces pour vos moments uniques.
-                </p>
-                <button class="contact-btn">
-                    Nous contacter
-                </button>
+
+        {% for event in events %}
+            <div class="events-content ">
+                <div class="events-text">
+                    <h2 class="events-title">{{ event.titre }}</h2>
+                    <p class="events-description">{{ event.description }}</p>
+                    {% if event.dateEvenement %}
+                        <p class="event-date">{{ event.dateEvenement|date('d/m/Y H:i') }}</p>
+                    {% endif %}
+                    <button class="contact-btn">
+                        Nous contacter
+                    </button>
+                </div>
+                <div class="events-image">
+                    {% if event.nomFichier %}
+                        <img src="{{ asset('uploads/events/' ~ event.nomFichier) }}" alt="{{ event.titre }}">
+                    {% else %}
+                        <img src="{{ asset('images/evenements/karaoke.jpeg') }}" alt="{{ event.titre }}">
+                    {% endif %}
+                </div>
             </div>
-            <div class="events-image">
-                <img src="{{ asset('images/evenements/karaoke.jpeg') }}" alt="Événements au CAP de Poitiers">
-            </div>
-        </div>
+        {% else %}
+            <p class="text-center text-muted">Aucun événement prévu pour le moment.</p>
+        {% endfor %}
+
     </div>
 </section>
-
 {% endblock %}

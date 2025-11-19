@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie Admin - Le Cap Ristobar{% endblock %}
+
+{% block body %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Gestion de la Galerie</h1>
+        <p>Ajouter, modifier ou supprimer des images</p>
+    </div>
+    <div class="admin-card mb-4">
+        <h2>Ajouter une image</h2>
+        <form method="post" enctype="multipart/form-data" action="{{ path('admin_gallery_add') }}">
+            <div class="form-group mb-2">
+                <label for="titre">Titre</label>
+                <input type="text" name="titre" id="titre" class="form-control" placeholder="Titre de l'image">
+            </div>
+            <div class="form-group mb-2">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" placeholder="Description de l'image"></textarea>
+            </div>
+            <div class="form-group mb-2">
+                <label for="image_file">Fichier</label>
+                <input type="file" name="image_file" id="image_file" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Ajouter l'image</button>
+        </form>
+    </div>
+    <div class="admin-card">
+        <h2>Images existantes</h2>
+
+        {% if images|length > 0 %}
+            <div class="row">
+                {% for image in images %}
+                    <div class="col-md-4 mb-4">
+                        <div class="gallery-card position-relative">
+                            <img src="{{ asset('uploads/gallery/' ~ image.nomFichier) }}" class="gallery-img img-fluid" alt="{{ image.titre }}">
+                            <div class="gallery-overlay">
+                                <h3>{{ image.titre ?: 'Sans titre' }}</h3>
+                                <p>{{ image.description ?: 'Pas de description' }}</p>
+                                <small>Ajoutée le {{ image.dateCreation|date('d/m/Y H:i') }}</small>
+                            </div>
+
+                            
+                            <div class="position-absolute top-0 end-0 m-2 d-flex gap-1">
+                                
+                                <button type="button" 
+                                        class="btn btn-warning btn-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#editModal{{ image.id }}">
+                                    Modifier
+                                </button>
+
+                                
+                                <form method="post" action="{{ path('admin_gallery_delete', {id: image.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-image-' ~ image.id) }}">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette image ?')">Supprimer</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {# Modal de modification #}
+                        <div class="modal fade" id="editModal{{ image.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ image.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel{{ image.id }}">Modifier l'image</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data" action="{{ path('admin_gallery_edit', {id: image.id}) }}">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('edit-image-' ~ image.id) }}">
+                                            
+                                            <div class="form-group mb-3">
+                                                <label for="titre{{ image.id }}">Titre</label>
+                                                <input type="text" name="titre" id="titre{{ image.id }}" class="form-control" value="{{ image.titre }}" placeholder="Titre de l'image">
+                                            </div>
+                                            
+                                            <div class="form-group mb-3">
+                                                <label for="description{{ image.id }}">Description</label>
+                                                <textarea name="description" id="description{{ image.id }}" class="form-control" placeholder="Description de l'image">{{ image.description }}</textarea>
+                                            </div>
+                                            
+                                            <div class="form-group mb-3">
+                                                <label for="image_file{{ image.id }}">Nouveau fichier (optionnel)</label>
+                                                <input type="file" name="image_file" id="image_file{{ image.id }}" class="form-control">
+                                                <small class="text-muted">Laisser vide pour conserver l'image actuelle</small>
+                                            </div>
+                                            
+                                            <div class="current-image mb-3">
+                                                <p class="small text-muted mb-1">Image actuelle :</p>
+                                                <img src="{{ asset('uploads/gallery/' ~ image.nomFichier) }}" class="img-thumbnail" style="max-height: 100px;" alt="{{ image.titre }}">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">Aucune image dans la galerie pour le moment.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.admin-header h1 {
+    font-family: "Amarante", sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.admin-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+}
+
+.gallery-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+}
+
+.gallery-card:hover {
+    transform: translateY(-3px);
+}
+
+.gallery-img {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: rgba(0,0,0,0.8);
+    color: white;
+}
+
+.gallery-overlay h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-overlay p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-overlay small {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+</style>
+{% endblock %}

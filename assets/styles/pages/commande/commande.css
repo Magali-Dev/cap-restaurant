@@ -1,0 +1,109 @@
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    color: #333;
+}
+
+.title {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    font-weight: 500;
+    color: #1f2937;
+    text-align: center;
+}
+
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.order-card {
+    border-radius: 10px;
+    padding: 14px 18px;
+    background: linear-gradient(145deg, #fefefe, #f0f4f8);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    font-size: 0.9rem;
+    transition: transform 0.15s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #111827;
+}
+
+.order-status-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.badge {
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    border-radius: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: #fff;
+}
+
+.badge.en-attente { background-color: #f59e0b; }   /* orange */
+.badge.payée { background-color: #10b981; }        /* vert doux */
+.badge.autre { background-color: #6b7280; }        /* gris */
+
+.order-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.order-items li {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.item-name {
+    font-weight: 500;
+    color: #111827;
+}
+
+.item-price {
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+.item-supplements {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-top: 3px;
+}
+
+.supp-badge {
+    background-color: #dbeafe; /* bleu doux */
+    color: #1e3a8a; /* bleu foncé */
+    padding: 2px 6px;
+    border-radius: 8px;
+    margin-right: 4px;
+    font-size: 0.75rem;
+}
+
+.empty {
+    color: #9ca3af;
+    font-size: 0.95rem;
+    text-align: center;
+    margin-top: 30px;
+}

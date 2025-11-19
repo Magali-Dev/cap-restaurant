@@ -1,0 +1,247 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des réservations - Le Cap Ristobar{% endblock %}
+
+{% block body %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>📅 Gestion des réservations</h1>
+        <div class="header-actions">
+            <a href="{{ path('admin_dashboard') }}" class="back-link">← Tableau de bord</a>
+            <div class="reservation-filters">
+                <button class="filter-btn active" data-filter="all">Toutes</button>
+                <button class="filter-btn" data-filter="today">Aujourd'hui</button>
+                <button class="filter-btn" data-filter="pending">En attente</button>
+                <button class="filter-btn" data-filter="confirmed">Confirmées</button>
+                <button class="filter-btn" data-filter="cancelled">Annulées</button>
+            </div>
+        </div>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            <div class="alert-icon">✅</div>
+            <div class="alert-message">{{ message }}</div>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-error">
+            <div class="alert-icon">❌</div>
+            <div class="alert-message">{{ message }}</div>
+        </div>
+    {% endfor %}
+
+    <div class="reservations-stats">
+        <div class="stat-mini">
+            <div class="stat-mini-icon">📋</div>
+            <div class="stat-mini-content">
+                <span class="stat-mini-number">{{ reservations|length }}</span>
+                <span class="stat-mini-label">Total</span>
+            </div>
+        </div>
+        <div class="stat-mini">
+            <div class="stat-mini-icon">🕐</div>
+            <div class="stat-mini-content">
+                <span class="stat-mini-number" id="today-count">0</span>
+                <span class="stat-mini-label">Aujourd'hui</span>
+            </div>
+        </div>
+        <div class="stat-mini">
+            <div class="stat-mini-icon">⏳</div>
+            <div class="stat-mini-content">
+                <span class="stat-mini-number" id="pending-count">0</span>
+                <span class="stat-mini-label">En attente</span>
+            </div>
+        </div>
+        <div class="stat-mini">
+            <div class="stat-mini-icon">✅</div>
+            <div class="stat-mini-content">
+                <span class="stat-mini-number" id="confirmed-count">0</span>
+                <span class="stat-mini-label">Confirmées</span>
+            </div>
+        </div>
+        <div class="stat-mini">
+            <div class="stat-mini-icon">❌</div>
+            <div class="stat-mini-content">
+                <span class="stat-mini-number" id="cancelled-count">0</span>
+                <span class="stat-mini-label">Annulées</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="reservations-table-container">
+        {% if reservations|length > 0 %}
+            <table class="reservations-table">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Date & Heure</th>
+                        <th>Personnes</th>
+                        <th>Contact</th>
+                        <th>Allergies</th>
+                        <th>Message</th>
+                        <th>Statut</th>
+                        <th>Actions rapides</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                        <tr class="reservation-row" 
+                            data-date="{{ reservation.dateReservation|date('Y-m-d') }}"
+                            data-status="{{ reservation.statut|lower }}">
+                            <td>
+                                <div class="client-info">
+                                    <div class="client-name">
+                                        <strong>{{ reservation.nom }}</strong>
+                                        {% if reservation.prenom %}
+                                            <span class="client-prenom">{{ reservation.prenom }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="reservation-meta">
+                                        <span class="reservation-id">#{{ reservation.id }}</span>
+                                        <span class="reservation-date">Créé le {{ reservation.creeLe ? reservation.creeLe|date('d/m/Y H:i') : 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="datetime-info">
+                                    <div class="reservation-date">
+                                        {{ reservation.dateReservation|date('d/m/Y') }}
+                                        {% if reservation.dateReservation|date('Y-m-d') == "now"|date('Y-m-d') %}
+                                            <span class="today-badge">Aujourd'hui</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="reservation-time">
+                                        <i class="far fa-clock"></i>
+                                        {{ reservation.heureReservation|date('H:i') }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="people-info">
+                                    <span class="people-badge">{{ reservation.nombrePersonnes }}</span>
+                                    <span class="people-label">personne(s)</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="contact-info">
+                                    <div class="contact-email">
+                                        <i class="far fa-envelope"></i>
+                                        {{ reservation.email }}
+                                    </div>
+                                    <div class="contact-phone">
+                                        <i class="fas fa-phone"></i>
+                                        {{ reservation.telephone }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {% if reservation.allergie %}
+                                    <div class="allergie-info">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span class="allergie-text">{{ reservation.allergie }}</span>
+                                    </div>
+                                {% else %}
+                                    <span class="no-allergie">Aucune allergie</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if reservation.message %}
+                                    <div class="message-info">
+                                        <button class="message-toggle" onclick="toggleMessage({{ reservation.id }})">
+                                            <i class="fas fa-comment"></i>
+                                            Voir message
+                                        </button>
+                                        <div class="message-content" id="message-{{ reservation.id }}">
+                                            {{ reservation.message }}
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <span class="no-message">Aucun message</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="post" action="{{ path('admin_reservation_status', {'id': reservation.id}) }}" class="status-form">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('status-reservation-' ~ reservation.id) }}">
+                                    <select name="status" class="status-select status-{{ reservation.statut|lower|replace({' ': '-'}) }}" onchange="this.form.submit()">
+                                        <option value="En attente" {{ reservation.statut == 'En attente' ? 'selected' : '' }}>⏳ En attente</option>
+                                        <option value="Confirmée" {{ reservation.statut == 'Confirmée' ? 'selected' : '' }}>✅ Confirmée</option>
+                                        <option value="Annulée" {{ reservation.statut == 'Annulée' ? 'selected' : '' }}>❌ Annulée</option>
+                                        <option value="Terminée" {{ reservation.statut == 'Terminée' ? 'selected' : '' }}>🏁 Terminée</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td class="quick-actions">
+                                <div class="quick-action-buttons">
+                                    {% if reservation.statut != 'Confirmée' %}
+                                        <form method="post" action="{{ path('admin_reservation_status', {'id': reservation.id}) }}" class="quick-form">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('status-reservation-' ~ reservation.id) }}">
+                                            <input type="hidden" name="status" value="Confirmée">
+                                            <button type="submit" class="btn-quick btn-confirm" title="Confirmer la réservation" onclick="return confirm('Confirmer la réservation #{{ reservation.id }} ?')">
+                                                <i class="fas fa-check"></i>
+                                                Confirmer
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    
+                                    {% if reservation.statut != 'Annulée' %}
+                                        <form method="post" action="{{ path('admin_reservation_status', {'id': reservation.id}) }}" class="quick-form">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('status-reservation-' ~ reservation.id) }}">
+                                            <input type="hidden" name="status" value="Annulée">
+                                            <button type="submit" class="btn-quick btn-cancel" title="Annuler la réservation" onclick="return confirm('Annuler la réservation #{{ reservation.id }} ?')">
+                                                <i class="fas fa-times"></i>
+                                                Annuler
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="actions">
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-info" onclick="showReservationDetails({{ reservation.id }})" title="Détails">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-action btn-call" onclick="callClient('{{ reservation.telephone }}')" title="Appeler le client">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                    <button class="btn-action btn-email" onclick="emailClient('{{ reservation.email }}')" title="Envoyer un email">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <form method="post" action="{{ path('admin_reservation_delete', {'id': reservation.id}) }}" 
+                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la réservation #{{ reservation.id }} ?')">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-reservation-' ~ reservation.id) }}">
+                                        <button type="submit" class="btn-action btn-delete" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="no-reservations">
+                <div class="no-reservations-icon">📅</div>
+                <h3>Aucune réservation trouvée</h3>
+                <p>Il n'y a pas encore de réservations enregistrées dans le système.</p>
+                <a href="{{ path('admin_dashboard') }}" class="btn btn-primary">Retour au tableau de bord</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal pour les détails de réservation -->
+<div class="modal" id="reservationModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Détails de la réservation</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+    </div>
+</div>
+{% endblock %}

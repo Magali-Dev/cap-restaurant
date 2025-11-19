@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier - Le Cap Ristobar{% endblock %}
+
+{% block body %}
+<div class="container my-5" style="max-width: 900px;">
+    <h1 class="mb-4">🛒 Mon Panier</h1>
+
+    <div id="panier-container">
+        
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between align-items-center">
+        <a href="{{ path('pizza_list') }}" class="btn btn-outline-secondary">← Retour aux pizzas</a>
+
+        {% if app.user %}
+            <button class="btn btn-success" id="valider-panier">
+                <i class="fas fa-check-circle me-2"></i>Payer votre commande 
+            </button>
+        {% else %}
+            <a href="{{ path('app_auth') }}" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt me-2"></i> Se connecter pour valider
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{# Passage des variables nécessaires au JS via data-attributes #}
+<div id="js-variables"
+     data-url-create-session="{{ path('commande_create_session')|e('html_attr') }}"
+     data-stripe-public-key="{{ stripe_public_key|e('html_attr') }}">
+</div>
+{% endblock %}

@@ -1,0 +1,381 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion / Inscription - Le Cap Ristobar{% endblock %}
+
+{% block body %}
+<section class="auth-section">
+    <div class="auth-container">
+        
+        <!-- Connexion -->
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2 class="auth-title">Connexion</h2>
+                <p class="auth-subtitle">Content de vous revoir</p>
+            </div>
+
+            {# Messages flash #}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    <div class="alert-icon"></div>
+                    <div class="alert-message">{{ message }}</div>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('danger') %}
+                <div class="alert alert-error">
+                    <div class="alert-icon">❌</div>
+                    <div class="alert-message">{{ message }}</div>
+                </div>
+            {% endfor %}
+
+            {# Messages d'erreur de connexion #}
+            {% if login_error %}
+                <div class="alert alert-error">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-message">
+                        {{ login_error.messageKey|trans(login_error.messageData, 'security') }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="post" action="{{ path('app_auth') }}" class="auth-form" id="loginForm">
+                <input type="hidden" name="form_type" value="login">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                
+                <div class="form-group">
+                    <label for="login_email" class="form-label">Adresse e-mail</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input type="email" id="login_email" name="_username" 
+                               class="form-input"
+                               value="{{ last_username }}" 
+                               required 
+                               autofocus 
+                               autocomplete="email"
+                               placeholder="votre@email.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="login_password" class="form-label">Mot de passe</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="login_password" name="_password" 
+                               class="form-input"
+                               required 
+                               autocomplete="current-password"
+                               placeholder="Votre mot de passe">
+                        <button type="button" class="password-toggle" data-target="login_password">👁️</button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="remember_me" name="_remember_me" class="checkbox-input">
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">Se souvenir de moi</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">Se connecter</button>
+            </form>
+        </div>
+
+        <!-- Séparateur -->
+        <div class="auth-separator">
+            <span class="separator-text">ou</span>
+        </div>
+
+        <!-- Inscription -->
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2 class="auth-title">Créer un compte</h2>
+                <p class="auth-subtitle">Rejoignez notre communauté</p>
+            </div>
+
+            {{ form_start(registrationForm, {'attr': {'id': 'registerForm', 'class': 'auth-form needs-validation'}}) }}
+                <input type="hidden" name="form_type" value="register">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form_label(registrationForm.nom, 'Nom *', {'label_attr': {'class': 'form-label'}}) }}
+                        <div class="input-wrapper">
+                            <span class="input-icon">👤</span>
+                            {{ form_widget(registrationForm.nom, {
+                                'attr': {
+                                    'class': 'form-input ' ~ (registrationForm.nom.vars.errors|length > 0 ? 'is-invalid' : ''),
+                                    'autocomplete': 'family-name',
+                                    'placeholder': 'Votre nom'
+                                }
+                            }) }}
+                        </div>
+                        {{ form_errors(registrationForm.nom) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(registrationForm.prenom, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+                        <div class="input-wrapper">
+                            <span class="input-icon">👤</span>
+                            {{ form_widget(registrationForm.prenom, {
+                                'attr': {
+                                    'class': 'form-input ' ~ (registrationForm.prenom.vars.errors|length > 0 ? 'is-invalid' : ''),
+                                    'autocomplete': 'given-name',
+                                    'placeholder': 'Votre prénom'
+                                }
+                            }) }}
+                        </div>
+                        {{ form_errors(registrationForm.prenom) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.numeroTelephone, 'Numéro de téléphone', {'label_attr': {'class': 'form-label'}}) }}
+                    <div class="input-wrapper">
+                        <span class="input-icon">📱</span>
+                        {{ form_widget(registrationForm.numeroTelephone, {
+                            'attr': {
+                                'class': 'form-input ' ~ (registrationForm.numeroTelephone.vars.errors|length > 0 ? 'is-invalid' : ''),
+                                'autocomplete': 'tel',
+                                'placeholder': '+33 1 23 45 67 89'
+                            }
+                        }) }}
+                    </div>
+                    {{ form_errors(registrationForm.numeroTelephone) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.email, 'Adresse email *', {'label_attr': {'class': 'form-label'}}) }}
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        {{ form_widget(registrationForm.email, {
+                            'attr': {
+                                'class': 'form-input email-check ' ~ (registrationForm.email.vars.errors|length > 0 ? 'is-invalid' : ''),
+                                'autocomplete': 'email',
+                                'placeholder': 'votre@email.com'
+                            }
+                        }) }}
+                    </div>
+                    <div class="email-feedback" id="emailFeedback"></div>
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.motDePasse.first, 'Mot de passe *', {'label_attr': {'class': 'form-label'}}) }}
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        {{ form_widget(registrationForm.motDePasse.first, {
+                            'attr': {
+                                'class': 'form-input password-field ' ~ (registrationForm.motDePasse.first.vars.errors|length > 0 ? 'is-invalid' : ''),
+                                'autocomplete': 'new-password',
+                                'placeholder': 'Choisissez un mot de passe'
+                            }
+                        }) }}
+                        <button type="button" class="password-toggle" data-target="registration_form_motDePasse_first">👁️</button>
+                    </div>
+                    {{ form_errors(registrationForm.motDePasse.first) }}
+                    
+                    <!-- Ajout des caractères autorisés en évidence en rouge -->
+                    <div class="password-rules">
+                        <div class="rules-header">
+                            <span class="warning-icon">⚠️</span>
+                            <strong>Règles du mot de passe</strong>
+                        </div>
+                        <div class="rules-content">
+                            <div class="rule-item">
+                                <span class="rule-check">•</span>
+                                <span>Minimum 6 caractères</span>
+                            </div>
+                            <div class="rule-item">
+                                <span class="rule-check">•</span>
+                                <span>Caractères autorisés :</span>
+                            </div>
+                            <div class="allowed-chars-container">
+                                <div class="char-group">
+                                    <span class="char-type">Lettres :</span>
+                                    <span class="chars-value">A - Z &nbsp; a - z</span>
+                                </div>
+                                <div class="char-group">
+                                    <span class="char-type">Chiffres :</span>
+                                    <span class="chars-value">0 - 9</span>
+                                </div>
+                                <div class="char-group">
+                                    <span class="char-type">Spéciaux :</span>
+                                    <span class="chars-value special">&nbsp;@&nbsp;#&nbsp;$&nbsp;%&nbsp;*&nbsp;-&nbsp;_&nbsp;!&nbsp;?&nbsp;/</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.motDePasse.second, 'Confirmation du mot de passe *', {'label_attr': {'class': 'form-label'}}) }}
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        {{ form_widget(registrationForm.motDePasse.second, {
+                            'attr': {
+                                'class': 'form-input password-confirm-field ' ~ (registrationForm.motDePasse.second.vars.errors|length > 0 ? 'is-invalid' : ''),
+                                'autocomplete': 'new-password',
+                                'placeholder': 'Répétez votre mot de passe'
+                            }
+                        }) }}
+                        <button type="button" class="password-toggle" data-target="registration_form_motDePasse_second">👁️</button>
+                    </div>
+                    {{ form_errors(registrationForm.motDePasse.second) }}
+                    {{ form_errors(registrationForm.motDePasse) }}
+                    <small class="form-hint reminder">
+                        🔄 Doit être identique au mot de passe choisi
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-wrapper">
+                        {{ form_widget(registrationForm.agreeTerms, {
+                            'attr': {
+                                'class': 'checkbox-input ' ~ (registrationForm.agreeTerms.vars.errors|length > 0 ? 'is-invalid' : '')
+                            }
+                        }) }}
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">
+                            J'accepte les <a href="#" onclick="alert('Page des conditions en construction'); return false;" class="text-link">conditions d'utilisation</a> *
+                        </span>
+                    </label>
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
+
+                <button type="submit" class="btn btn-secondary btn-full" id="registerButton">Créer mon compte</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+</section>
+{# 
+    ⚠️ Script spécifique à ce template Twig.
+    Il reste ici car il utilise des variables Twig comme {{ path('app_check_email') }} 
+    et des conditions comme {% if app.flashes('success') %}. 
+    Placer ce code dans un fichier JS externe casserait ces fonctionnalités dynamiques. 
+    Il interagit aussi directement avec les éléments HTML de ce template.
+    Garder le script ici assure un fonctionnement fiable et plus simple à maintenir.
+#}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Vérification email en temps réel
+    const emailInput = document.querySelector('.email-check');
+    const emailFeedback = document.getElementById('emailFeedback');
+    const registerButton = document.getElementById('registerButton');
+    
+    if (emailInput && emailFeedback) {
+        let checkTimeout;
+        
+        emailInput.addEventListener('input', function() {
+            clearTimeout(checkTimeout);
+            emailFeedback.textContent = '⏳ Vérification...';
+            emailFeedback.className = 'email-feedback';
+            
+            checkTimeout = setTimeout(() => {
+                const email = this.value.trim();
+                
+                if (email === '') {
+                    emailFeedback.textContent = '';
+                    return;
+                }
+                
+                // Validation basique d'email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    emailFeedback.textContent = '❌ Format d\'email invalide';
+                    emailFeedback.className = 'email-feedback error';
+                    emailInput.classList.add('error');
+                    if (registerButton) registerButton.disabled = true;
+                    return;
+                }
+                
+                // Vérification AJAX avec la base de données
+                fetch('{{ path('app_check_email') }}?email=' + encodeURIComponent(email))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            emailFeedback.textContent = '❌ Cet email est déjà utilisé';
+                            emailFeedback.className = 'email-feedback error';
+                            emailInput.classList.add('error');
+                            if (registerButton) registerButton.disabled = true;
+                        } else {
+                            emailFeedback.textContent = '✅ Email disponible';
+                            emailFeedback.className = 'email-feedback success';
+                            emailInput.classList.remove('error');
+                            if (registerButton) registerButton.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur de vérification:', error);
+                        emailFeedback.textContent = '';
+                        if (registerButton) registerButton.disabled = false;
+                    });
+            }, 800);
+        });
+    }
+
+    // Toggle password visibility
+    document.querySelectorAll('.password-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const targetInput = document.getElementById(targetId);
+            
+            if (targetInput.type === 'password') {
+                targetInput.type = 'text';
+                this.textContent = '🔒';
+            } else {
+                targetInput.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+    });
+
+    // Validation en temps réel des mots de passe
+    const passwordField = document.querySelector('.password-field');
+    const confirmField = document.querySelector('.password-confirm-field');
+    
+    if (passwordField && confirmField) {
+        // Validation du format en temps réel
+        passwordField.addEventListener('input', function() {
+            const value = this.value;
+            const regex = /^[A-Za-z0-9&@#$%*\-_!?\/]*$/; // Même regex que Symfony
+            
+            if (value && !regex.test(value)) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+            }
+            
+            // Vérifier la correspondance des mots de passe
+            checkPasswordMatch();
+        });
+        
+        // Validation de la correspondance en temps réel
+        confirmField.addEventListener('input', checkPasswordMatch);
+        
+        function checkPasswordMatch() {
+            const password = passwordField.value;
+            const confirm = confirmField.value;
+            
+            if (confirm && password !== confirm) {
+                confirmField.classList.add('is-invalid');
+            } else {
+                confirmField.classList.remove('is-invalid');
+            }
+        }
+    }
+
+    // Animation d'entrée
+    const cards = document.querySelectorAll('.auth-card');
+    cards.forEach((card, index) => {
+        card.style.animation = `slideIn 0.5s ease-out ${index * 0.1}s both`;
+    });
+
+    // Focus automatique sur le champ email de connexion après une inscription réussie
+    {% if app.flashes('success')|length > 0 %}
+        const loginEmailInput = document.getElementById('login_email');
+        if (loginEmailInput) {
+            loginEmailInput.focus();
+        }
+    {% endif %}
+});
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Commandes{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="title">🛒 Mes Commandes</h1>
+
+    {% if commandes|length > 0 %}
+        <div class="orders-grid">
+            {% for commande in commandes %}
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-id">Commande #{{ commande.id }}</span>
+                        <span class="order-date">{{ commande.createdAt|date('d/m/Y H:i') }}</span>
+                    </div>
+                    <div class="order-status-total">
+                        <span class="order-total">{{ commande.total|number_format(2, '.', ',') }} €</span>
+                        <span class="badge {{ commande.status|lower|replace({' ': '-'}) }}">{{ commande.status }}</span>
+                    </div>
+
+                    {% if commande.items|length > 0 %}
+                        <ul class="order-items">
+                            {% for item in commande.items %}
+                                <li>
+                                    <span class="item-name">{{ item.nom }}</span> x{{ item.qty }} 
+                                    <span class="item-price">{{ (item.prix * item.qty)|number_format(2, '.', ',') }} €</span>
+                                    {% if item.decodedSupplements|length > 0 %}
+                                        <div class="item-supplements">
+                                            Suppléments: 
+                                            {% for sup in item.decodedSupplements %}
+                                                <span class="supp-badge">{{ sup.nom }} x{{ sup.qty }}</span>{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty">Vous n'avez aucune commande pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

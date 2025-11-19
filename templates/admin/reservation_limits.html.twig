@@ -1,0 +1,201 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Limitation des réservations - Admin{% endblock %}
+
+{% block body %}
+<div class="admin-container">
+
+    <div class="admin-header">
+        <div class="header-main">
+            <h1>⚙️ Limitation des réservations</h1>
+            <p class="header-subtitle">Contrôlez la disponibilité des réservations en ligne</p>
+        </div>
+        <div class="header-actions">
+            <a href="{{ path('admin_dashboard') }}" class="btn btn-icon">
+                <span class="btn-icon">←</span>
+                Tableau de bord
+            </a>
+            <a href="{{ path('admin_reservations') }}" class="btn btn-outline">
+                <span class="btn-icon">📅</span>
+                Voir les réservations
+            </a>
+        </div>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            <div class="alert-content">
+                <span class="alert-icon">✅</span>
+                <span class="alert-message">{{ message }}</span>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="limitation-grid">
+
+        <!-- Carte 1 : Désactivation complète -->
+        <div class="limitation-card card-primary">
+            <div class="card-icon">🛑</div>
+            <div class="card-content">
+                <div class="card-header">
+                    <h3>Désactivation complète</h3>
+                    <div class="status-indicator {{ status.online_enabled ? 'status-on' : 'status-off' }}">
+                        <span class="status-dot"></span>
+                        {{ status.online_enabled ? 'Activé' : 'Désactivé' }}
+                    </div>
+                </div>
+                <p class="card-description">
+                    Bloquer immédiatement toutes les nouvelles réservations en ligne.
+                </p>
+                <div class="card-actions">
+                    <form method="post" class="inline-form">
+                        {% if status.online_enabled %}
+                            <button type="submit" name="action" value="disable_all" 
+                                    class="btn btn-danger btn-full"
+                                    onclick="return confirm('Êtes-vous sûr de vouloir désactiver toutes les réservations en ligne ?')">
+                                <span class="btn-icon">🚫</span>
+                                Désactiver les réservations
+                            </button>
+                        {% else %}
+                            <button type="submit" name="action" value="enable_all" 
+                                    class="btn btn-success btn-full">
+                                <span class="btn-icon">✅</span>
+                                Activer les réservations
+                            </button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carte 2 : Blocage par heures -->
+        <div class="limitation-card">
+            <div class="card-icon">⏰</div>
+            <div class="card-content">
+                <div class="card-header">
+                    <h3>Heures spécifiques</h3>
+                    <div class="stat-badge" id="hoursCount">
+                        {{ status.disabled_hours|length }} créneau(x) bloqué(s)
+                    </div>
+                </div>
+                <p class="card-description">
+                    Empêcher les réservations pour certains créneaux horaires.
+                </p>
+
+                <form method="post" class="hours-form">
+                    <div class="time-slots-section">
+
+                        <h4 class="section-title">Créneaux du midi</h4>
+                        <div class="time-slots-grid">
+                            {% for slot in all_time_slots %}
+                                {% if slot >= '12:00' and slot <= '14:00' %}
+                                    <label class="time-slot-item {{ slot in status.disabled_hours ? 'disabled' : '' }}">
+                                        <input type="checkbox" name="disabled_hours[]" value="{{ slot }}"
+                                               {% if slot in status.disabled_hours %}checked{% endif %}>
+                                        <span class="time-slot-check"></span>
+                                        <span class="time-slot-label">{{ slot }}</span>
+                                    </label>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <h4 class="section-title">Créneaux du soir</h4>
+                        <div class="time-slots-grid">
+                            {% for slot in all_time_slots %}
+                                {% if slot >= '19:00' and slot <= '22:30' %}
+                                    <label class="time-slot-item {{ slot in status.disabled_hours ? 'disabled' : '' }}">
+                                        <input type="checkbox" name="disabled_hours[]" value="{{ slot }}"
+                                               {% if slot in status.disabled_hours %}checked{% endif %}>
+                                        <span class="time-slot-check"></span>
+                                        <span class="time-slot-label">{{ slot }}</span>
+                                    </label>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" name="action" value="disable_hours" class="btn btn-primary btn-full">
+                            <span class="btn-icon">💾</span>
+                            Enregistrer les modifications
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Carte 3 : Blocage par dates -->
+        <div class="limitation-card">
+            <div class="card-icon">📅</div>
+            <div class="card-content">
+                <div class="card-header">
+                    <h3>Dates spécifiques</h3>
+                    <div class="stat-badge" id="datesCount">
+                        {{ status.disabled_dates|length }} date(s) bloquée(s)
+                    </div>
+                </div>
+                <p class="card-description">
+                    Fermer les réservations en ligne pour certains jours.
+                </p>
+
+                <form method="post" id="datesForm">
+                    <div class="dates-section">
+
+                        <div class="selected-dates-container">
+                            <h4 class="section-title">Dates bloquées</h4>
+                            <div id="selectedDates" class="selected-dates">
+                                {% if status.disabled_dates is empty %}
+                                    <div class="empty-state">
+                                        <span class="empty-icon">📅</span>
+                                        <span class="empty-text">Aucune date bloquée</span>
+                                    </div>
+                                {% else %}
+                                    {% for date in status.disabled_dates %}
+                                        {% if date is iterable %}
+                                            {% set dateString = date|first %}
+                                        {% elseif date is same as(null) %}
+                                            {% set dateString = '' %}
+                                        {% else %}
+                                            {% set dateString = date|date('Y-m-d') %}
+                                        {% endif %}
+                                        <div class="date-tag">
+                                            <span class="date-text">{{ dateString|date('d/m/Y') }}</span>
+                                            <button type="button" class="remove-date" data-date="{{ dateString }}">
+                                                <span class="remove-icon">×</span>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="date-input-section">
+                            <h4 class="section-title">Ajouter une date</h4>
+                            <div class="date-input-group">
+                                <input type="date" id="datePicker" class="form-input" min="{{ "now"|date('Y-m-d') }}">
+                                <button type="button" id="addDateBtn" class="btn btn-outline btn-icon">
+                                    <span class="btn-icon">➕</span>
+                                    Ajouter
+                                </button>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="disabled_dates" id="disabledDatesInput"
+                               value="{% for date in status.disabled_dates %}{{ date|date('Y-m-d') }}{% if not loop.last %},{% endif %}{% endfor %}">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" name="action" value="disable_dates" class="btn btn-primary btn-full">
+                            <span class="btn-icon">💾</span>
+                            Enregistrer les dates
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

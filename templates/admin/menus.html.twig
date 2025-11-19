@@ -1,0 +1,223 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Menus{% endblock %}
+
+{% block body %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Gestion des Menus ou suggestions</h1>
+        <p>Ajouter, modifier ou supprimer les menus ou les suggestions proposés</p>
+    </div>
+
+    {# Messages flash #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    {# Formulaire d'ajout d'un menu #}
+    <div class="admin-card mb-4">
+        <h2>Ajouter un menu</h2>
+        <form method="post" enctype="multipart/form-data" action="{{ path('admin_menus_add') }}">
+            <div class="form-group mb-2">
+                <label for="titre">Nom du menu</label>
+                <input type="text" name="nom" id="titre" class="form-control" placeholder="Ex : Menu du Marché" required>
+            </div>
+
+            <div class="form-group mb-2">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" placeholder="Ex : Entrée + Plat + Dessert..."></textarea>
+            </div>
+
+            <div class="form-group mb-2">
+                <label for="image_file">Image</label>
+                <input type="file" name="image_file" id="image_file" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2">Ajouter le menu</button>
+        </form>
+    </div>
+
+    {# Liste des menus existants #}
+    <div class="admin-card">
+        <h2>Menus existants</h2>
+
+        {% if menus|length > 0 %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>Date d'ajout</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for menu in menus %}
+                        <tr>
+                            <td>{{ menu.titre }}</td>
+                            <td>{{ menu.description ?: '—' }}</td>
+                            <td>
+                                {% if menu.nomFichier %}
+                                    <img src="{{ asset('uploads/menus/' ~ menu.nomFichier) }}" 
+                                         alt="{{ menu.titre }}" 
+                                         style="max-height: 80px; max-width: 100px; object-fit: cover; border-radius: 4px;"
+                                         onerror="this.style.display='none'">
+                                {% else %}
+                                    <span class="text-muted">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if menu.dateCreation %}
+                                    {{ menu.dateCreation|date('d/m/Y H:i') }}
+                                {% else %}
+                                    <span class="text-muted">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    {# Bouton Modifier #}
+                                    <button type="button" 
+                                            class="btn btn-warning" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editModal{{ menu.id }}">
+                                        Modifier
+                                    </button>
+
+                                    {# Bouton Supprimer #}
+                                    <form method="post" action="{{ path('admin_menus_delete', {id: menu.id}) }}" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-menu-' ~ menu.id) }}">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce menu ?')">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="text-center py-4">
+                <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Aucun menu enregistré pour le moment.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{# Modals de modification #}
+{% for menu in menus %}
+<div class="modal fade" id="editModal{{ menu.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ menu.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel{{ menu.id }}">Modifier "{{ menu.titre }}"</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" enctype="multipart/form-data" action="{{ path('admin_menus_edit', {id: menu.id}) }}">
+                <div class="modal-body">
+                    <input type="hidden" name="_token" value="{{ csrf_token('edit-menu-' ~ menu.id) }}">
+                    
+                    <div class="form-group mb-3">
+                        <label for="edit_nom{{ menu.id }}" class="form-label">Nom du menu</label>
+                        <input type="text" name="nom" id="edit_nom{{ menu.id }}" class="form-control" value="{{ menu.titre }}" required>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label for="edit_description{{ menu.id }}" class="form-label">Description</label>
+                        <textarea name="description" id="edit_description{{ menu.id }}" class="form-control" rows="3">{{ menu.description }}</textarea>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label for="edit_image_file{{ menu.id }}" class="form-label">Nouvelle image (optionnel)</label>
+                        <input type="file" name="image_file" id="edit_image_file{{ menu.id }}" class="form-control">
+                        <small class="text-muted">Laisser vide pour conserver l'image actuelle</small>
+                    </div>
+                    
+                    {% if menu.nomFichier %}
+                        <div class="current-image mb-3">
+                            <p class="small text-muted mb-2">Image actuelle :</p>
+                            <img src="{{ asset('uploads/menus/' ~ menu.nomFichier) }}" 
+                                 class="img-thumbnail" 
+                                 style="max-height: 100px; max-width: 120px; object-fit: cover;"
+                                 alt="{{ menu.titre }}"
+                                 onerror="this.style.display='none'">
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<style>
+.admin-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.admin-header h1 {
+    font-family: "Amarante", sans-serif;
+    font-size: 2.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.admin-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    border: 1px solid #e9ecef;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.btn-group .btn {
+    flex: 1;
+    white-space: nowrap;
+}
+
+.alert {
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
